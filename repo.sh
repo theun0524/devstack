@@ -23,7 +23,7 @@ repos=(
     "https://github.com/edx/cs_comments_service.git"
     "https://github.com/edx/ecommerce.git"
     "https://github.com/edx/edx-e2e-tests.git"
-    "https://github.com/edx/edx-platform.git"
+    "https://github.com/theun0524/edx-platform.git"
     "https://github.com/edx/xqueue.git"
 )
 
@@ -32,7 +32,7 @@ private_repos=(
     "https://github.com/edx/edx-themes.git"
 )
 
-name_pattern=".*edx/(.*).git"
+name_pattern=".*/.*/(.*).git"
 
 _clone ()
 {
