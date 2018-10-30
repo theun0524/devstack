@@ -23,8 +23,10 @@ repos=(
     "https://github.com/edx/cs_comments_service.git"
     "https://github.com/edx/ecommerce.git"
     "https://github.com/edx/edx-e2e-tests.git"
+    "https://github.com/edx/edx-notes-api.git"
     "https://github.com/theun0524/edx-platform.git"
     "https://github.com/edx/xqueue.git"
+    "https://github.com/edx/edx-analytics-pipeline.git"
 )
 
 private_repos=(
@@ -33,6 +35,38 @@ private_repos=(
 )
 
 name_pattern=".*/.*/(.*).git"
+
+_checkout ()
+{
+    repos_to_checkout=("$@")
+
+    if [ -z "$OPENEDX_RELEASE" ]; then
+        branch="master"
+    else
+        branch="open-release/${OPENEDX_RELEASE}"
+    fi
+    for repo in "${repos_to_checkout[@]}"
+    do
+        # Use Bash's regex match operator to capture the name of the repo.
+        # Results of the match are saved to an array called $BASH_REMATCH.
+        [[ $repo =~ $name_pattern ]]
+        name="${BASH_REMATCH[1]}"
+
+        # If a directory exists and it is nonempty, assume the repo has been cloned.
+        if [ -d "$name" -a -n "$(ls -A "$name" 2>/dev/null)" ]; then
+            cd $name
+            echo "Checking out branch $branch of $name"
+            git pull
+            git checkout "$branch"
+            cd ..
+        fi
+    done
+}
+
+checkout ()
+{
+    _checkout "${repos[@]}"
+}
 
 _clone ()
 {
@@ -104,7 +138,9 @@ status ()
     cd - &> /dev/null
 }
 
-if [ "$1" == "clone" ]; then
+if [ "$1" == "checkout" ]; then
+    checkout
+elif [ "$1" == "clone" ]; then
     clone
 elif [ "$1" == "whitelabel" ]; then
     clone_private
