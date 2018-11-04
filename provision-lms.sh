@@ -15,6 +15,14 @@ done
 
 docker-compose exec lms bash -c 'source /edx/app/edxapp/edxapp_env && cd /edx/app/edxapp/edx-platform && NO_PYTHON_UNINSTALL=1 paver install_prereqs'
 
+# Install reactlms package
+docker-compose exec lms bash -c 'source /edx/app/edxapp/edxapp_env && cd /edx/app/edxapp/edx-platform && pip install -e /edx/src/reactlms/'
+docker-compose exec studio bash -c 'source /edx/app/edxapp/edxapp_env && cd /edx/app/edxapp/edx-platform && pip install -e /edx/src/reactlms/'
+
+# Copy lms.env.json to edx.devstack.lms
+docker cp ../edx-platform/lms.env.json edx.devstack.lms:/edx/app/edxapp
+docker-compose exec lms bash -c 'cd /edx/app/edxapp && chown edxapp:www-data lms.env.json'
+
 #Installing prereqs crashes the process
 docker-compose restart lms
 

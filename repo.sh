@@ -31,7 +31,7 @@ repos=(
 
 private_repos=(
     # Needed to run whitelabel tests.
-    "https://github.com/edx/edx-themes.git"
+    "https://github.com/armbox/edux-theme.git"
 )
 
 name_pattern=".*/.*/(.*).git"
@@ -98,6 +98,21 @@ clone ()
     _clone "${repos[@]}"
 }
 
+clone_reactlms ()
+{
+    if [[ ! -d "$DEVSTACK_WORKSPACE/src" ]]; then
+        mkdir $DEVSTACK_WORKSPACE/src
+    fi
+
+    cd $DEVSTACK_WORKSPACE/src
+    if [ -d "reactlms" ]; then
+        printf "The [src/reactlms] repo is already checked out. Continuing.\n"
+    else
+        git clone https://github.com/armbox/reactlms
+    fi
+    cd - &> /dev/null
+}
+
 clone_private ()
 {
     _clone "${private_repos[@]}"
@@ -142,6 +157,7 @@ if [ "$1" == "checkout" ]; then
     checkout
 elif [ "$1" == "clone" ]; then
     clone
+    clone_reactlms
 elif [ "$1" == "whitelabel" ]; then
     clone_private
 elif [ "$1" == "reset" ]; then

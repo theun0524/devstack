@@ -18,6 +18,7 @@ services:
       - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
   lms:
     volumes:
+      - ${DEVSTACK_WORKSPACE}/edux-theme:/edx/app/edxapp/themes:cached
       - ${DEVSTACK_WORKSPACE}/edx-platform:/edx/app/edxapp/edx-platform:cached
       - edxapp_node_modules:/edx/app/edxapp/edx-platform/node_modules
       - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
@@ -27,6 +28,7 @@ services:
       - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
   studio:
     volumes:
+      - ${DEVSTACK_WORKSPACE}/edux-theme:/edx/app/edxapp/themes:cached
       - ${DEVSTACK_WORKSPACE}/edx-platform:/edx/app/edxapp/edx-platform:cached
       - edxapp_node_modules:/edx/app/edxapp/edx-platform/node_modules
       - ${DEVSTACK_WORKSPACE}/src:/edx/src:cached
